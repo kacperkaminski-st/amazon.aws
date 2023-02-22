@@ -1699,8 +1699,10 @@ def change_instance_state(filters, desired_module_state):
                 # 'pending'
                 if inst['State']['Name'] == 'pending':
                     await_instances([inst['InstanceId']], desired_module_state='running', force_wait=True)
+                elif inst['State']['Name'] == 'stopping':
+                    await_instances([inst['InstanceId']], desired_module_state='stopped', force_wait=True)
                 # Already moving to the relevant state
-                elif inst['State']['Name'] in ('stopping', 'stopped'):
+                elif inst['State']['Name'] == 'stopped':
                     unchanged.add(inst['InstanceId'])
                     continue
 
